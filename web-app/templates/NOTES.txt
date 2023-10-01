@@ -1,0 +1,16 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+IMPORTANT!! You need to add or update the following line below with the hosts used on the project on this file -> C:\Windows\System32\drivers\etc\hosts
+127.0.0.1 trashtalker.internal.fe trashtalker.internal.be
+
+**** After that you should be able to access the app by: ****
+    http://web.trashtalker.internal
+
+Author: lopes.joao.ca@gmail.com

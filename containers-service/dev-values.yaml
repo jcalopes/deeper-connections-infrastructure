@@ -1,0 +1,29 @@
+namespace: trash-talker
+
+image:
+  repository: lopesdev/containers-service
+  pullPolicy: Always
+  containerPort: 8084
+  tag: ""
+
+resources:
+  limits:
+    cpu: 512m
+    memory: 512Mi
+  requests:
+    cpu: 256m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+properties:
+  postgres_host: postgres
+  postgres_port: 5432
+  postgres_db: containers
+  rabbitmq_host: rabbitmq
+  rabbitmq_port: 5672
+  queue_name: measurements

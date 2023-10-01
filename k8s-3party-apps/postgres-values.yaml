@@ -1,0 +1,20 @@
+nameOverride: postgres
+fullnameOverride: postgres
+auth:
+  username: userSql
+  password: MyPassword#
+global:
+  postgresql:
+    auth:
+      postgresPassword: passAdmin
+primary:
+  service:
+    type: NodePort
+    nodePorts:
+      postgresql: 30432
+  initdb:
+    scripts:
+      init.sql: |
+        CREATE DATABASE containers;
+        CREATE DATABASE accounts;
+        CREATE DATABASE routes;

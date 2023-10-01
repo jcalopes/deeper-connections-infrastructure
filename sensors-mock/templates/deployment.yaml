@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sensors-mock
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: 1
+  {{- else }}
+  {{- toYaml .Values.autoscaling | nindent 2 }}
+  {{- end }}
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: sensors-mock
+          image: "{{ .Values.image.repository }}:v{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.image.containerPort }}
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: {{ .Values.image.containerPort }}
+            initialDelaySeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: {{ .Values.image.containerPort }}
+            initialDelaySeconds: 5
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-configmap
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminer
+  namespace: trash-talker
+  labels:
+    app: adminer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adminer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: adminer
+    spec:
+      containers:
+        - name: adminer
+          image: adminer:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: adminer-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminer
+  namespace: trash-talker
+spec:
+  type: NodePort
+  selector:
+    app: adminer
+  ports:
+    - port: 8090
+      targetPort: 8080
+      protocol: TCP

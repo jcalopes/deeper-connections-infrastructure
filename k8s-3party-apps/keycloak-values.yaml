@@ -1,0 +1,16 @@
+auth:
+  adminUser: trashtalkerAdmin
+  adminPassword: trashtalkerPass
+
+postgresql:
+  auth:
+    username: trashtalker_db
+    password: MyPass123
+    database: keycloak_db
+
+service:
+  type: NodePort
+
+
+
+
